@@ -1,24 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>sa1tama0 - Security Researcher</title>
+    <title>sa1tama0</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        .bg-light-red {
+            background-color: #c92e2e;
+        }
+        .text-light-red {
+            color: #ff4d4d;
+        }
+        h2 {
+            color: #ffffff;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #cccccc;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        a {
+            color: #ff4d4d;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #ff4d4d;
+            object-fit: cover;
+        }
+        .carousel {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        .carousel img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transition: opacity 1s ease-in-out;
+        }
+        .carousel img.hidden {
+            opacity: 0;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="inner">
-            <span>i</span>
-            <h1>About Me</h1>
-            <p>I am a passionate and skilled security researcher with over three years of experience in
-                information security, penetration testing, and offensive security. I am driven by a strong desire to
-                help organizations enhance their security posture and make the internet a safer place for all.
-            </p>
-        </div>
-    </div>
-</body>
 
+    <!-- Header -->
+    <header class="bg-light shadow">
+        <div class="container mx-auto flex justify-between items-center p-6">
+            <h1 class="text-2xl font-bold">Tarikul Islam</h1>
+            <nav>
+                <a href="#education" class="mx-3 text-white">Education</a>
+                <a href="#certifications" class="mx-3 text-white">Certifications</a>
+                <a href="#competitions" class="mx-3 text-white">Competitions</a>
+                <a href="#awards" class="mx-3 text-white">Awards</a>
+                <a href="#skills" class="mx-3 text-white">Skills</a>
+                <a href="#experience" class="mx-3 text-white">Experience</a>
+                <a href="#links" class="mx-3 text-white">Links</a>
+            </nav>
+        </div>
+    </header>
+    <hr>
+
+    <!-- Profile Picture Carousel -->
+    <section class="container mx-auto my-12 text-center">
+        <div class="carousel">
+            <img src="https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg" alt="Profile Picture 1" class="profile-pic">
+            <img src="https://images.pexels.com/photos/10702496/pexels-photo-10702496.jpeg" alt="Profile Picture 2" class="profile-pic hidden">
+            <img src="https://images.pexels.com/photos/460856/pexels-photo-460856.jpeg" alt="Profile Picture 3" class="profile-pic hidden">
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Education</h2>
+        <div>
+            <h3 class="text-xl font-semibold">Bachelor of Science</h3>
+            <p><strong>Institute:</strong> Green University of Bangladesh</p>
+            <p><strong>Subject:</strong> Computer Science and Engineering</p>
+        </div>
+        <div class="mt-4">
+            <h3 class="text-xl font-semibold">Diploma in Engineering</h3>
+            <p><strong>Institute:</strong> Shariatpur Polytechnic Institute</p>
+            <p><strong>Subject:</strong> Instrumentation & Process Control Technology</p>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Certifications</h2>
+        <ul class="list-disc pl-6">
+            <li>Android Forensics with Belkasoft, Issued March 2024</li>
+            <li>Certified Appsec Practitioner (CAP) - The SecOps Group, Issued Feb 2023, Credential ID 7032059</li>
+        </ul>
+    </section>
+
+    <!-- Competitions and Events Section -->
+    <section id="competitions" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Competitions and Events</h2>
+        <ul class="list-disc pl-6">
+            <li>The Phoenix Summit: 1st Runner Up</li>
+            <li>CTFBD - MAZE IN ANTARJAL: 3rd Team</li>
+            <li>MIST LeetCon 2023: 5th Team</li>
+            <li>SUST SWE TECHNOVENT CTF 2023: 2nd Runner Up</li>
+            <li>University Cyber Drill 2022: 11th Team</li>
+            <li>National Cyber Drill 2022: 5th Team</li>
+            <li>University Cyber Drill 2021: Champion</li>
+            <li>National Cyber Drill 2021: 4th Team</li>
+            <li>Cyber Security Summit Hackathon 2021: Winner</li>
+            <li>Cyber Apocalypse CTF 21: 94th Team</li>
+        </ul>
+    </section>
+
+    <!-- Honors and Awards Section -->
+    <section id="awards" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Honors and Awards</h2>
+        <ul class="list-disc pl-6">
+            <li>Microsoft Security Response Center (MSRC) online service acknowledgment, August 2021</li>
+            <li>Intel Hall of Fame</li>
+            <li>Indeed Hall of Fame</li>
+            <li>Reddit Hall of Fame</li>
+            <li>Zebpay Hall of Fame</li>
+            <li>Shift Crypto Hall of Fame</li>
+        </ul>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Skills</h2>
+        <ul class="list-disc pl-6">
+            <li>Penetration testing</li>
+            <li>Offensive security</li>
+            <li>Network security</li>
+            <li>Web security</li>
+            <li>Application security</li>
+            <li>Linux/Unix and Windows and Server Administration</li>
+            <li>Scripting in Bash, Python</li>
+            <li>Digital forensic</li>
+            <li>Intelligence gathering (OSINT) and reconnaissance</li>
+        </ul>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Experience</h2>
+        <div>
+            <h3 class="text-xl font-semibold">Red Team Member at Synack Red Team</h3>
+            <p>2022 - Present</p>
+        </div>
+        <div class="mt-4">
+            <h3 class="text-xl font-semibold">Researcher at HackerOne</h3>
+            <p>2018 - Present</p>
+        </div>
+        <div class="mt-4">
+            <h3 class="text-xl font-semibold">Researcher at BugCrowd</h3>
+            <p>2018 - Present</p>
+        </div>
+    </section>
+
+    <!-- Links Section -->
+    <section id="links" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Links</h2>
+        <ul class="list-disc pl-6">
+            <li><a href="https://www.linkedin.com/in/sa1tama0" class="text-white">LinkedIn</a></li>
+            <li><a href="https://app.hackthebox.com/users/462317" class="text-white">HackTheBox</a></li>
+            <li><a href="https://hackerone.com/sa1tama0" class="text-white">HackerOne</a></li>
+            <li><a href="https://bugcrowd.com/sa1tama0" class="text-white">BugCrowd</a></li>
+            <li><a href="https://platform.synack.com/profile/sa1tama0" class="text-white">Synack</a></li>
+        </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>sa1tama0.com</p>
+    </footer>
+
+    <script>
+        const images = document.querySelectorAll('.carousel img');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            images[currentIndex].classList.add('hidden');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.remove('hidden');
+        }
+
+        setInterval(showNextImage, 3000);
+    </script>
+
+</body>
 </html>
