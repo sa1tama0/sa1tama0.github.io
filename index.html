@@ -3,148 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarikul Islam | sa1tama0 | Security Specialist | Ethical Hacker </title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Tarikul Islam - Red Team Specialist</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
         body {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+            background: #110000;
+            color: #ffcccc;
+            line-height: 1.6;
         }
-        .bg-light-red {
-            background-color: #c92e2e;
+
+        /* Red Glow Animation */
+        @keyframes red-glow {
+            0% { box-shadow: 0 0 10px #ff0000; }
+            50% { box-shadow: 0 0 20px #ff4444, 0 0 30px #ff0000; }
+            100% { box-shadow: 0 0 10px #ff0000; }
         }
-        .text-light-red {
-            color: #ff4d4d;
+
+        /* Red Pulse Animation */
+        @keyframes red-pulse {
+            0% { text-shadow: 0 0 10px #ff0000; }
+            50% { text-shadow: 0 0 20px #ff4444, 0 0 30px #ff0000; }
+            100% { text-shadow: 0 0 10px #ff0000; }
         }
-        h2 {
-            color: #ffffff;
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
         }
-        .footer {
-            background-color: #1a1a1a;
-            color: #cccccc;
+
+        header {
             text-align: center;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            padding: 4rem 0;
+            border-bottom: 1px solid #ff4444;
+            animation: red-glow 3s infinite;
         }
+
+        h1 {
+            color: #ff4444;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: red-pulse 3s infinite;
+        }
+
+        h2 {
+            color: #ff6666;
+            margin: 2rem 0;
+            border-bottom: 2px solid #ff4444;
+            padding-bottom: 0.5rem;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .section {
+            background: #220000;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #ff4444;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.5);
+            border: 1px solid #ff0000;
+        }
+
+        .experience-item, .ctf-item, .certification-item {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-left: 3px solid #ff4444;
+            transition: border-left 0.3s;
+        }
+
+        .experience-item:hover {
+            border-left: 3px solid #ff0000;
+        }
+
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-tag {
+            background: #330000;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: background 0.3s, transform 0.3s;
+            border: 1px solid #ff4444;
+        }
+
+        .skill-tag:hover {
+            background: #550000;
+            transform: scale(1.05);
+            border: 1px solid #ff0000;
+        }
+
         a {
-            color: #ff4d4d;
+            color: #ff4444;
             text-decoration: none;
+            position: relative;
         }
-        a:hover {
-            text-decoration: none;
+
+        a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #ff0000;
+            transition: width 0.3s;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        .contact {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #ff4444;
+        }
+
+        /* Terminal-like blinking cursor effect */
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .terminal {
+            display: inline-block;
+            position: relative;
+        }
+
+        .terminal::after {
+            content: "|";
+            animation: blink 1s infinite;
+            color: #ff4444;
+            margin-left: 2px;
+        }
+
+        /* Red Scanline Animation */
+        @keyframes scanline {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+
+        .scanline {
+            position: fixed;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to bottom, rgba(255, 0, 0, 0), rgba(255, 0, 0, 1), rgba(255, 0, 0, 0));
+            animation: scanline 5s linear infinite;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
+    <!-- Red Scanline Effect -->
+    <div class="scanline"></div>
 
-    <!-- Header -->
-    <header class="bg-light-red shadow">
-        <div class="container mx-auto flex justify-between items-center p-6">
-            <h1 class="text-2xl font-bold">Tarikul Islam</h1>
-            <nav>
-                <a href="#experience" class="mx-3 text-white">Experience</a>
-                <a href="#ctf" class="mx-3 text-white">CTF Achievements</a>
-                <a href="#education" class="mx-3 text-white">Education</a>
-                <a href="#certifications" class="mx-3 text-white">Certifications</a>
-                <a href="#skills" class="mx-3 text-white">Skills</a>
-            </nav>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><span class="terminal">TARIKUL ISLAM</span></h1>
+            <p>Red Team Specialist | Offensive Security | Bug Bounty Hunter</p>
+        </header>
+        <div class="section">
+            <h2>Summary</h2>
+            <p>With over <strong>6 years of hands-on experience</strong> in <strong>web and mobile penetration testing</strong>, I specialize in identifying and mitigating security vulnerabilities to strengthen organizational security postures. My expertise spans across various industries, where I have contributed to enhancing cybersecurity resilience through <strong>proactive assessments</strong> and <strong>strategic recommendations</strong>.</p>
+            <p>I actively participate in global security platforms such as <strong>Synack</strong> and multiple <strong>bug bounty programs</strong>, consistently identifying <strong>critical vulnerabilities</strong> and collaborating with organizations to fortify their digital assets. My passion for cybersecurity drives me to stay ahead of evolving threats, leveraging <strong>cutting-edge tools</strong> and methodologies to ensure comprehensive security coverage.</p>
         </div>
-    </header>
-    <hr>
-
-    <!-- Summary Section -->
-    <section class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Summary</h2>
-        <p>
-            Web and Android penetration testing professional with over 6 years of hands-on experience in technology. 
-            Driven by a passion for securing Web and Mobile Applications, Networks, and Cloud environments. 
-            As an Independent Security Researcher, I've honed my skills in uncovering vulnerabilities and fortifying systems. 
-            Now, I'm eager to bring my expertise to an established Offensive Security or DevSecOps team, where I can contribute 
-            to cutting-edge security solutions and help defend against the latest threats.
-        </p>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Experience</h2>
-        <div>
-            <h3 class="text-xl font-semibold">SRT Member</h3>
-            <p><strong>Synack</strong> - December 2022 - Present</p>
+        <div class="section">
+            <h2>Experience</h2>
+            <div class="experience-item">
+                <h3>SRT Member @ Synack</h3>
+                <p>December 2022 - Present</p>
+            </div>
+            <div class="experience-item">
+                <h3>Security Researcher @ BugCrowd</h3>
+                <p>March 2020 - February 2023</p>
+            </div>
+            <div class="experience-item">
+                <h3>Vulnerability Researcher @ Responsible Disclosure Program</h3>
+                <p>November 2019 - October 2022</p>
+            </div>
+            <div class="experience-item">
+                <h3>Security Researcher @ HackerOne</h3>
+                <p>September 2018 - October 2022</p>
+            </div>
         </div>
-        <div class="mt-4">
-            <h3 class="text-xl font-semibold">Security Researcher</h3>
-            <p><strong>BugCrowd</strong> - March 2020 - February 2023</p>
+        <div class="section">
+            <h2>CTF Achievements</h2>
+            <div class="ctf-item">
+                <h3>The Phoenix Summit - 1st Runner Up</h3>
+                <p>2024</p>
+            </div>
+            <div class="ctf-item">
+                <h3>CTFBD - MAZE IN ANTARJAL - 3rd Team</h3>
+                <p>2023</p>
+            </div>
+            <div class="ctf-item">
+                <h3>MIST LeetCon 2023 - 5th Team</h3>
+                <p>2023</p>
+            </div>
+            <div class="ctf-item">
+                <h3>SUST SWE TECHNOVENT CTF- 2nd Runner Up</h3>
+                <p>2023</p>
+            </div>
+            <div class="ctf-item">
+                <h3>National Cyber Drill - 5th Team</h3>
+                <p>2022</p>
+            </div>
+            <div class="ctf-item">
+                <h3>University Cyber Drill  - Champion</h3>
+                <p>2022</p>
+            </div>
+            <div class="ctf-item">
+                <h3>National Cyber Drill - 4th Team</h3>
+                <p>2021</p>
+            </div>
+            <div class="ctf-item">
+                <h3>Cyber Security Summit Hackathon - Champion</h3>
+                <p>2021</p>
+            </div>
+            <div class="ctf-item">
+                <h3>Cyber Apocalypse CTF - 94th Team</h3>
+                <p>2021</p>
+            </div>
         </div>
-        <div class="mt-4">
-            <h3 class="text-xl font-semibold">Vulnerability Researcher</h3>
-            <p><strong>Responsible Disclosure Program</strong> - November 2019 - October 2022</p>
+        <div class="section">
+            <h2>Education</h2>
+            <div class="education-item">
+                <h3>Bachelor of Science in Computer Science and Engineering</h3>
+                <p>Green University of Bangladesh</p>
+            </div>
+            <div class="education-item">
+                <h3>Diploma in Instrumentation & Process Control Technology</h3>
+                <p>Shariatpur Polytechnic Institute</p>
+            </div>
         </div>
-        <div class="mt-4">
-            <h3 class="text-xl font-semibold">Security Researcher</h3>
-            <p><strong>HackerOne</strong> - September 2018 - October 2022</p>
+
+        <div class="section">
+        <div class="certification-item">
+            <h3>Certified Application Penetration Tester (CAPEN) (2025)</h3>
+            <p>The SecOps Group</p>
         </div>
-    </section>
-
-    <!-- CTF Achievements Section -->
-    <section id="ctf" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">CTF Competition Achievements</h2>
-        <ul class="list-disc pl-6">
-            <li>The Phoenix Summit - 1st Runner Up</li>
-            <li>CTFBD - MAZE IN ANTARJAL - 3rd Team</li>
-            <li>MIST LeetCon 2023 - 5th Team</li>
-            <li>SUST SWE TECHNOVENT CTF 2023 - 2nd Runner Up</li>
-            <li>University Cyber Drill 2022 - 11th Team</li>
-            <li>National Cyber Drill 2022 - 5th Team</li>
-            <li>University Cyber Drill 2021 - Champion</li>
-            <li>National Cyber Drill 2021 - 4th Team</li>
-            <li>Cyber Security Summit Hackathon 2021 - Champion</li>
-            <li>Cyber Apocalypse CTF 21 - 94th Team</li>
-        </ul>
-    </section>
-
-    <!-- Education Section -->
-    <section id="education" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Education</h2>
-        <div>
-            <h3 class="text-xl font-semibold">Bachelor of Science in Computer Science and Engineering</h3>
-            <p><strong>Green University of Bangladesh</strong> - Ongoing</p>
+            <h2>Certifications</h2>
+        <div class="certification-item">
+                <h3>Multi-Cloud Red Teaming Analyst (2024)</h3>
+                <p>CyberWarFare Labs</p>
         </div>
-        <div class="mt-4">
-            <h3 class="text-xl font-semibold">Diploma in Engineering in Instrumentation & Process Control Technology</h3>
-            <p><strong>Shariatpur Polytechnic Institute</strong></p>
+        <div class="certification-item">
+                <h3>Android Forensics with Belkasoft (2024)</h3>
+                <p>Belkasoft</p>
         </div>
-    </section>
-
-    <!-- Certifications Section -->
-    <section id="certifications" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Certifications</h2>
-        <ul class="list-disc pl-6">
-            <li>Android Forensics with Belkasoft - Belkasoft (2024)</li>
-            <li>Multi-Cloud Red Teaming Analyst - CyberWarFare Labs (2024)</li>
-            <li>Certified AppSec Practitioner (CAP) - The SecOps Group (2023)</li>
-        </ul>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="container mx-auto my-12 p-6 bg-light-red rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Skills</h2>
-        <ul class="list-disc pl-6">
-            <li>Penetration Testing & Vulnerability Assessment</li>
-            <li>Incident Response & Digital Forensics</li>
-            <li>Programming & Scripting (Python, Bash, C)</li>
-            <li>Web & Mobile Security</li>
-            <li>Risk Assessment & Mitigation Strategy Development</li>
-            <li>Threat Intelligence & OSINT</li>
-        </ul>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p><a href="mailto:sa1tama0@yahoo.com">sa1tama0@yahoo.com</a></p>
-    </footer>
-
+        <div class="certification-item">
+                <h3>Certified AppSec Practitioner (CAP) (2023)</h3>
+                <p>The SecOps Group</p>
+        </div>
+        </div>
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="skills">
+                <div class="skill-tag">Offensive Security</div>
+                <div class="skill-tag">Defensive Security</div>
+                <div class="skill-tag">Programming & Scripting</div>
+                <div class="skill-tag">Threat Intelligence & OSINT</div>
+            </div>
+        </div>
+        <div class="contact">
+            <h2>Let's Connect!</h2>
+            <p>Email: <a href="mailto:sa1tama0@yahoo.com">sa1tama0@yahoo.com</a></p>
+            <p>LinkedIn: <a href="https://www.linkedin.com/in/sa1tama0" target="_blank">linkedin.com/in/sa1tama0</a></p>
+            <p>HackerOne: <a href="http://hackerone.com/sa1tama0" target="_blank">hackerone.com/sa1tama0</a></p>
+            <p>GitHub: <a href="https://github.com/sa1tama0/" target="_blank">github.com/sa1tama0</a></p>
+        </div>
+    </div>
 </body>
 </html>
