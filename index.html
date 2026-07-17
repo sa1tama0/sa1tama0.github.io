@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarikul Islam | Red Team Specialist | Offensive Security</title>
+<meta name="description" content="Tarikul Islam (sa1tama0) — Red Team Specialist. Synack Red Team member. 7+ years of web and mobile penetration testing, bug bounty, and vulnerability research.">
+
+<link rel="icon" type="image/png" href="images/sailogo.png">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#08080A;
+  --panel:#0E0E11;
+  --panel-2:#131318;
+  --line:#1E1E25;
+  --red:#E4002B;
+  --red-dim:#7A0018;
+  --red-wash:rgba(228,0,43,.07);
+  --fg:#EDEDF0;
+  --fg-2:#9A9AA6;
+  --mut:#5E5E6B;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+
+/* static grid + scanlines — replaces the matrix canvas */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;opacity:.35;
+  -webkit-mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 35%,transparent 100%);
+  mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,#000 35%,transparent 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:100;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 1px,transparent 1px 3px);
+}
+::selection{background:var(--red);color:#fff}
+
+/* ---------- shared ---------- */
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.section{padding:100px 0;position:relative}
+.section-head{margin-bottom:48px}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--mut);display:flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--red);flex:none}
+.section-title{font-size:clamp(1.9rem,3.6vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-top:14px}
+.section-sub{color:var(--fg-2);max-width:620px;margin-top:12px;font-size:.98rem}
+
+/* ---------- progress + nav ---------- */
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--red);width:0;z-index:1001}
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(8,8,10,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s;
+}
+.header.scrolled{border-bottom-color:var(--line);background:rgba(8,8,10,.95)}
+.nav-container{max-width:1160px;margin:0 auto;padding:16px 28px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--fg);text-decoration:none}
+.logo b{color:var(--red)}
+.navbar{display:flex;align-items:center;gap:30px}
+.navbar a{
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mut);text-decoration:none;padding:4px 0;position:relative;transition:color .2s;
+}
+.navbar a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--red);transition:width .25s}
+.navbar a:hover,.navbar a.active{color:var(--fg)}
+.navbar a:hover::after,.navbar a.active::after{width:100%}
+.menu-toggle{display:none;flex-direction:column;gap:5px;background:0;border:0;cursor:pointer;padding:6px}
+.menu-toggle span{width:22px;height:1.5px;background:var(--fg);transition:.3s}
+.menu-toggle.active span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.menu-toggle.active span:nth-child(2){opacity:0}
+.menu-toggle.active span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ---------- hero ---------- */
+.home{
+  min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr;
+  align-items:center;gap:64px;max-width:1160px;margin:0 auto;padding:140px 28px 80px;
+}
+.status{
+  display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--fg-2);
+  border:1px solid var(--line);background:var(--panel);padding:6px 12px;margin-bottom:26px;
+}
+.dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(228,0,43,.6)}70%{box-shadow:0 0 0 7px rgba(228,0,43,0)}100%{box-shadow:0 0 0 0 rgba(228,0,43,0)}}
+
+.home h1{font-size:clamp(2.6rem,6vw,4.3rem);font-weight:800;letter-spacing:-.045em;line-height:1;margin-bottom:10px}
+.alias{font-family:var(--mono);font-size:.95rem;color:var(--mut);margin-bottom:22px}
+.alias b{color:var(--red);font-weight:500}
+.pro-line{font-family:var(--mono);font-size:1.05rem;color:var(--fg);min-height:1.7em;margin-bottom:24px}
+.pro-line::after{content:'_';color:var(--red);animation:blink .9s steps(1) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.about-text{color:var(--fg-2);font-size:1rem;line-height:1.75;max-width:560px;margin-bottom:34px}
+
+.home-sci{display:flex;gap:1px;background:var(--line);border:1px solid var(--line);width:fit-content;margin-bottom:30px}
+.home-sci a{
+  width:44px;height:44px;background:var(--panel);display:grid;place-items:center;
+  color:var(--fg-2);font-size:1.15rem;text-decoration:none;transition:.2s;
+}
+.home-sci a:hover{background:var(--red);color:#fff}
+
+.btn-box{
+  display:inline-flex;align-items:center;gap:9px;padding:13px 24px;
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--red);background:var(--red);color:#fff;transition:.22s;
+}
+.btn-box:hover{background:#ff0f3d;border-color:#ff0f3d}
+
+/* terminal replaces the glowing circle + gif */
+.terminal{border:1px solid var(--line);background:var(--panel);box-shadow:0 30px 80px -20px rgba(0,0,0,.9)}
+.terminal-header{background:var(--panel-2);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;gap:8px}
+.terminal-header i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+.terminal-header i:first-child{background:var(--red-dim)}
+.terminal-title{font-family:var(--mono);font-size:10px;color:var(--mut);margin-left:8px;letter-spacing:.1em}
+.terminal-body{padding:22px;font-family:var(--mono);font-size:.78rem;line-height:1.9}
+.prompt{color:var(--red);margin-right:6px}
+.out{color:var(--fg-2)}
+.out.hit{color:var(--fg)}
+.out.hit b{color:var(--red);font-weight:500}
+.cursor{background:var(--red);color:var(--red);animation:blink .9s steps(1) infinite}
+
+/* ---------- experience ---------- */
+.timeline{border-top:1px solid var(--line)}
+.entry{
+  display:grid;grid-template-columns:220px 1fr;gap:40px;align-items:start;
+  padding:30px 0;border-bottom:1px solid var(--line);position:relative;
+}
+.entry::before{
+  content:"";position:absolute;left:-28px;right:-28px;top:0;bottom:0;
+  background:var(--red-wash);opacity:0;transition:opacity .25s;pointer-events:none;
+}
+.entry:hover::before{opacity:1}
+.entry-date{font-family:var(--mono);font-size:.78rem;color:var(--red);letter-spacing:.03em}
+.entry-flag{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-top:6px}
+.entry-role{font-size:1.2rem;font-weight:700;letter-spacing:-.02em}
+.entry-org{font-family:var(--mono);font-size:.82rem;color:var(--red);margin-top:5px;display:flex;align-items:center;gap:10px}
+.org-mark{
+  width:24px;height:24px;border:1px solid var(--line);background:var(--panel);
+  display:grid;place-items:center;font-size:.62rem;font-weight:700;color:var(--red);flex:none;
+}
+.entry:hover .org-mark{border-color:var(--red)}
+.achievements{list-style:none;margin-top:16px}
+.achievements li{
+  position:relative;padding-left:18px;margin-bottom:7px;
+  color:var(--fg-2);font-size:.86rem;line-height:1.55;
+}
+.achievements li::before{content:"–";position:absolute;left:0;color:var(--red)}
+
+/* ---------- list panel ---------- */
+.panel{background:var(--panel);border:1px solid var(--line)}
+.rows{list-style:none}
+.rows li{
+  display:flex;align-items:center;gap:16px;padding:14px 22px;
+  border-bottom:1px solid var(--line);transition:background .2s;
+}
+.rows li:last-child{border-bottom:0}
+.rows li:hover{background:var(--panel-2)}
+.rank{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);color:var(--mut);padding:3px 8px;flex:none;min-width:104px;text-align:center;
+}
+.rank.win{border-color:var(--red);color:var(--red);background:var(--red-wash)}
+.row-name{font-size:.92rem;color:var(--fg-2)}
+.rows li:hover .row-name{color:var(--fg)}
+.row-year{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--mut);flex:none}
+
+/* ---------- two-column band ---------- */
+.band{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.band > div{background:var(--panel);padding:34px 28px}
+.band-title{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-bottom:22px}
+.band-title::before{content:"// ";color:var(--red)}
+.edu{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.edu:last-child{padding-bottom:0;margin-bottom:0;border-bottom:0}
+.edu h4{font-size:.98rem;font-weight:600;line-height:1.45}
+.edu p{font-family:var(--mono);font-size:.76rem;color:var(--red);margin-top:7px}
+.cert{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.cert:last-child{border-bottom:0}
+.cert-y{font-family:var(--mono);font-size:.7rem;color:var(--red);flex:none;width:36px}
+.cert-n{font-size:.88rem;color:var(--fg-2)}
+.cert-n span{display:block;font-family:var(--mono);font-size:.68rem;color:var(--mut);margin-top:3px}
+
+/* ---------- skills ---------- */
+.cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.cap{background:var(--panel);padding:30px 26px;transition:background .25s}
+.cap:hover{background:var(--panel-2)}
+.cap-icon{font-size:1.15rem;color:var(--red);margin-bottom:16px;display:block}
+.cap-title{font-size:1rem;font-weight:700;margin-bottom:16px;letter-spacing:-.01em}
+.cap ul{list-style:none}
+.cap li{
+  font-family:var(--mono);font-size:.76rem;color:var(--fg-2);padding:8px 0;
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;
+}
+.cap li:last-child{border-bottom:0}
+.cap li::before{content:"▸";color:var(--red-dim);font-size:.68rem}
+.cap li:hover::before{color:var(--red)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:48px 0 56px;background:var(--panel)}
+.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:26px;flex-wrap:wrap}
+.foot-name{font-family:var(--mono);font-size:.9rem;color:var(--fg)}
+.foot-name b{color:var(--red)}
+.footer-text{font-family:var(--mono);font-size:.8rem;color:var(--mut);margin-top:8px;text-decoration:none;display:inline-block;border-bottom:1px solid transparent;transition:.2s}
+.footer-text:hover{color:var(--red);border-bottom-color:var(--red)}
+.foot-tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media(max-width:980px){
+  .home{grid-template-columns:1fr;gap:48px;padding-top:120px}
+  .band{grid-template-columns:1fr}
+  .entry{grid-template-columns:1fr;gap:14px;align-items:start}
+}
+@media(max-width:720px){
+  .menu-toggle{display:flex}
+  .navbar{
+    position:fixed;top:57px;right:-100%;width:78%;max-width:340px;height:calc(100vh - 57px);
+    background:rgba(8,8,10,.98);backdrop-filter:blur(16px);flex-direction:column;
+    align-items:flex-start;padding:30px 28px;gap:0;border-left:1px solid var(--line);transition:right .3s;
+  }
+  .navbar.active{right:0}
+  .navbar a{display:block;width:100%;padding:16px 0;border-bottom:1px solid var(--line);font-size:.82rem}
+  .btn-box{width:100%;justify-content:center}
+  .rows li{flex-wrap:wrap;gap:10px}
+  .row-year{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="header" id="header">
+  <div class="nav-container">
+    <a href="#home" class="logo">sa1tama0<b>_</b></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="navbar" id="navbar">
+      <a href="#experience">Experience</a>
+      <a href="#ctf">CTF</a>
+      <a href="#education">Education</a>
+      <a href="#certifications">Certs</a>
+      <a href="#skills">Skills</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="home">
+  <div class="home-content">
+    <div class="status"><span class="dot"></span> Synack Red Team · Vetted SRT</div>
+
+    <h1>Tarikul Islam</h1>
+    <div class="alias">alias <b>sa1tama0</b> · Bangladesh</div>
+
+    <p class="pro-line"><span id="typed"></span></p>
+
+    <p class="about-text">
+      7+ years of hands-on web and mobile penetration testing. I identify and help remediate
+      security vulnerabilities that strengthen organizational security posture — working through
+      Synack, Yogosha, and multiple bug bounty programs, consistently surfacing critical findings
+      and collaborating with teams to fortify their digital assets.
+    </p>
+
+    <div class="home-sci">
+      <a href="https://github.com/sa1tama0" target="_blank" rel="noopener" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+      <a href="https://www.linkedin.com/in/sa1tama0" target="_blank" rel="noopener" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+      <a href="https://wa.me/+8801915852566" target="_blank" rel="noopener" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a>
+      <a href="https://www.instagram.com/sa1tama0_0x01/" target="_blank" rel="noopener" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+    </div>
+
+    <a href="https://sa1tama0.com/TarikulIslam.pdf" target="_blank" rel="noopener" class="btn-box">
+      <i class='bx bx-download'></i> Download CV
+    </a>
+  </div>
+
+  <div class="terminal">
+    <div class="terminal-header">
+      <i></i><i></i><i></i>
+      <span class="terminal-title">srt@ops — ~/profile</span>
+    </div>
+    <div class="terminal-body">
+      <p><span class="prompt">❯</span> whoami --verbose</p>
+      <p class="out">handle    : sa1tama0</p>
+      <p class="out">role      : Red Team Specialist</p>
+      <p class="out">employer  : Disclosify</p>
+      <p class="out">platforms : Synack · Yogosha · H1 · Bugcrowd</p>
+      <p class="out">focus     : web · mobile · api · recon</p>
+      <p class="out">active    : since Nov 2018</p>
+      <br>
+      <p><span class="prompt">❯</span> ctf --record</p>
+      <p class="out hit">champion ............. <b>2x</b></p>
+      <p class="out hit">podium finishes ...... <b>4x</b></p>
+      <p class="out hit">competitions ......... <b>10</b></p>
+      <br>
+      <p><span class="prompt">❯</span> <span class="cursor">&nbsp;</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Operational History</div>
+      <h2 class="section-title">Experience</h2>
+      <p class="section-sub">Full-time analyst work alongside vetted red team programs and leading bug bounty platforms — all currently active.</p>
+    </div>
+
+    <div class="timeline">
+      <article class="entry reveal">
+        <div>
+          <span class="entry-date">Feb 2025 — Present</span>
+          <div class="entry-flag">Full-time · 1 yr 6 mos</div>
+        </div>
+        <div>
+          <h3 class="entry-role">Cyber Security Analyst</h3>
+          <div class="entry-org"><span class="org-mark">D</span> Disclosify · Dhaka, BD</div>
+          <ul class="achievements">
+            <li>Conduct vulnerability assessments and penetration testing</li>
+            <li>Monitor and respond to security incidents</li>
+            <li>Perform risk analysis and recommend mitigation strategies</li>
+            <li>Support regulatory and compliance requirements</li>
+            <li>Prepare technical reports and security documentation</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry reveal">
+        <div>
+          <span class="entry-date">Nov 2025 — Present</span>
+          <div class="entry-flag">Freelance · Remote</div>
+        </div>
+        <div>
+          <h3 class="entry-role">Security Researcher — Strike Force</h3>
+          <div class="entry-org"><span class="org-mark">Y</span> Yogosha</div>
+        </div>
+      </article>
+
+      <article class="entry reveal">
+        <div>
+          <span class="entry-date">Dec 2022 — Present</span>
+          <div class="entry-flag">Freelance · 3 yrs 8 mos</div>
+        </div>
+        <div>
+          <h3 class="entry-role">Red Team Member</h3>
+          <div class="entry-org"><span class="org-mark">S</span> Synack Red Team</div>
+        </div>
+      </article>
+
+      <article class="entry reveal">
+        <div>
+          <span class="entry-date">Jan 2019 — Present</span>
+          <div class="entry-flag">Part-time · 7 yrs 7 mos</div>
+        </div>
+        <div>
+          <h3 class="entry-role">Ethical Hacker</h3>
+          <div class="entry-org"><span class="org-mark">B</span> Bugcrowd</div>
+        </div>
+      </article>
+
+      <article class="entry reveal">
+        <div>
+          <span class="entry-date">Nov 2018 — Present</span>
+          <div class="entry-flag">Part-time · 7 yrs 9 mos</div>
+        </div>
+        <div>
+          <h3 class="entry-role">Ethical Hacker</h3>
+          <div class="entry-org"><span class="org-mark">H1</span> HackerOne</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTF -->
+<section id="ctf" class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Competitive Record</div>
+      <h2 class="section-title">CTF Achievements</h2>
+      <p class="section-sub">Ten national and international capture-the-flag competitions.</p>
+    </div>
+
+    <div class="panel reveal">
+      <ul class="rows">
+        <li><span class="rank win">Champion</span><span class="row-name">University Cyber Drill</span><span class="row-year">2021</span></li>
+        <li><span class="rank win">Champion</span><span class="row-name">Cyber Security Summit Hackathon</span><span class="row-year">2021</span></li>
+        <li><span class="rank win">1st Runner Up</span><span class="row-name">The Phoenix Summit</span><span class="row-year">—</span></li>
+        <li><span class="rank win">2nd Runner Up</span><span class="row-name">SUST SWE TECHNOVENT CTF</span><span class="row-year">2023</span></li>
+        <li><span class="rank">3rd Team</span><span class="row-name">CTFBD — Maze in Antarjal</span><span class="row-year">—</span></li>
+        <li><span class="rank">4th Team</span><span class="row-name">National Cyber Drill</span><span class="row-year">2021</span></li>
+        <li><span class="rank">5th Team</span><span class="row-name">National Cyber Drill</span><span class="row-year">2022</span></li>
+        <li><span class="rank">5th Team</span><span class="row-name">MIST LeetCon</span><span class="row-year">2023</span></li>
+        <li><span class="rank">11th Team</span><span class="row-name">University Cyber Drill</span><span class="row-year">2022</span></li>
+        <li><span class="rank">94th Team</span><span class="row-name">Cyber Apocalypse CTF</span><span class="row-year">2021</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION + CERTIFICATIONS -->
+<section id="education" class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Credentials</div>
+      <h2 class="section-title">Education &amp; Certifications</h2>
+    </div>
+
+    <div class="band reveal">
+      <div>
+        <div class="band-title">Education</div>
+        <div class="edu">
+          <h4>B.Sc. in Computer Science &amp; Engineering</h4>
+          <p>Green University of Bangladesh</p>
+        </div>
+        <div class="edu">
+          <h4>Diploma in Engineering — Instrumentation &amp; Process Control Technology</h4>
+          <p>Shariatpur Polytechnic Institute</p>
+        </div>
+      </div>
+
+      <div id="certifications">
+        <div class="band-title">Certifications</div>
+        <div class="cert">
+          <span class="cert-y">2025</span>
+          <span class="cert-n">BlackSky: Blizzard<span>Hack The Box</span></span>
+        </div>
+        <div class="cert">
+          <span class="cert-y">2025</span>
+          <span class="cert-n">Certified Application Penetration Tester (CAPEN)<span>The SecOps Group</span></span>
+        </div>
+        <div class="cert">
+          <span class="cert-y">2024</span>
+          <span class="cert-n">Multi-Cloud Red Teaming Analyst<span>CyberWarFare Labs</span></span>
+        </div>
+        <div class="cert">
+          <span class="cert-y">2024</span>
+          <span class="cert-n">Android Forensics with Belkasoft<span>Belkasoft</span></span>
+        </div>
+        <div class="cert">
+          <span class="cert-y">2023</span>
+          <span class="cert-n">Certified AppSec Practitioner (CAP)<span>The SecOps Group</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Technical Arsenal</div>
+      <h2 class="section-title">Skills</h2>
+    </div>
+
+    <div class="cap-grid reveal">
+      <div class="cap">
+        <i class='bx bxs-bomb cap-icon'></i>
+        <h3 class="cap-title">Offensive Security</h3>
+        <ul>
+          <li>Web Application Pentesting</li>
+          <li>Mobile Security Assessment</li>
+          <li>API Security Testing</li>
+          <li>Business Logic Abuse</li>
+          <li>Source Code Review</li>
+        </ul>
+      </div>
+
+      <div class="cap">
+        <i class='bx bxs-shield-x cap-icon'></i>
+        <h3 class="cap-title">Defensive Security</h3>
+        <ul>
+          <li>Vulnerability Assessment</li>
+          <li>Security Architecture Review</li>
+          <li>Security Hardening</li>
+          <li>Remediation Guidance</li>
+          <li>Incident Response</li>
+        </ul>
+      </div>
+
+      <div class="cap">
+        <i class='bx bx-code-alt cap-icon'></i>
+        <h3 class="cap-title">Programming &amp; Scripting</h3>
+        <ul>
+          <li>Python</li>
+          <li>Bash</li>
+          <li>JavaScript / Node.js</li>
+          <li>SQL / NoSQL</li>
+          <li>Custom Tooling</li>
+        </ul>
+      </div>
+
+      <div class="cap">
+        <i class='bx bx-search-alt cap-icon'></i>
+        <h3 class="cap-title">Threat Intel &amp; OSINT</h3>
+        <ul>
+          <li>Reconnaissance</li>
+          <li>Attack Surface Mapping</li>
+          <li>OSINT Gathering</li>
+          <li>Threat Modeling</li>
+          <li>Asset Discovery</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div class="foot-name">Tarikul Islam <b>//</b> sa1tama0</div>
+      <a href="mailto:sa1tama0@yahoo.com" class="footer-text">sa1tama0@yahoo.com</a>
+    </div>
+    <div class="foot-tag">Red Team Specialist · Bangladesh</div>
+  </div>
+</footer>
+
+<script>
+// progress + scrolled state + active link
+const progress = document.getElementById('progress');
+const header   = document.getElementById('header');
+const links    = document.querySelectorAll('.navbar a');
+const sections = document.querySelectorAll('section[id]');
+let ticking = false;
+
+window.addEventListener('scroll', () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    const y = window.scrollY;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+    header.classList.toggle('scrolled', y > 40);
+
+    let current = '';
+    sections.forEach(s => { if (y >= s.offsetTop - 220) current = s.id; });
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+    ticking = false;
+  });
+}, { passive: true });
+
+// mobile menu
+const menuToggle = document.getElementById('menuToggle');
+const navbar = document.getElementById('navbar');
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  navbar.classList.toggle('active');
+});
+links.forEach(l => l.addEventListener('click', () => {
+  menuToggle.classList.remove('active');
+  navbar.classList.remove('active');
+}));
+
+// typing — replaces typed.js, one less external dependency
+const roles = ['Red Team Specialist', 'Offensive Security Researcher', 'Bug Bounty Hunter'];
+const typed = document.getElementById('typed');
+let ri = 0, ci = 0, del = false;
+(function type(){
+  const r = roles[ri];
+  typed.textContent = del ? r.substring(0, --ci) : r.substring(0, ++ci);
+  let speed = del ? 40 : 85;
+  if (!del && ci === r.length) { speed = 2200; del = true; }
+  else if (del && ci === 0) { del = false; ri = (ri + 1) % roles.length; speed = 400; }
+  setTimeout(type, speed);
+})();
+
+// reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: .12, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
