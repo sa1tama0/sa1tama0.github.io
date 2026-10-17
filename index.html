@@ -323,6 +323,23 @@ footer{border-top:1px solid var(--line);padding:48px 0 56px;background:var(--pan
     <div class="timeline">
       <article class="entry reveal">
         <div>
+          <span class="entry-date">Nov 2025 — Oct 2026</span>
+          <div class="entry-flag">Freelance · Remote</div>
+        </div>
+        <div>
+          <h3 class="entry-role">Security Researcher — Strike Force</h3>
+          <div class="entry-org"><span class="org-mark">Y</span> Yogosha</div>
+          <ul class="achievements">
+            <li>Conduct authorised penetration testing and vulnerability research against in-scope corporate applications</li>
+            <li>Investigate web application vulnerabilities, business-logic flaws and access-control weaknesses</li>
+            <li>Validate findings with manual testing and security tools, and assess potential impact</li>
+            <li>Prepare structured reports with reproduction steps, proof-of-concept evidence and remediation guidance</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry reveal">
+        <div>
           <span class="entry-date">Feb 2025 — Aug 2026</span>
           <div class="entry-flag">Full-time · 1 yr 6 mos</div>
         </div>
@@ -340,25 +357,8 @@ footer{border-top:1px solid var(--line);padding:48px 0 56px;background:var(--pan
 
       <article class="entry reveal">
         <div>
-          <span class="entry-date">Nov 2025</span>
-          <div class="entry-flag">Freelance · Remote</div>
-        </div>
-        <div>
-          <h3 class="entry-role">Security Researcher — Strike Force</h3>
-          <div class="entry-org"><span class="org-mark">Y</span> Yogosha</div>
-          <ul class="achievements">
-            <li>Conduct authorised penetration testing and vulnerability research against in-scope corporate applications</li>
-            <li>Investigate web application vulnerabilities, business-logic flaws and access-control weaknesses</li>
-            <li>Validate findings with manual testing and security tools, and assess potential impact</li>
-            <li>Prepare structured reports with reproduction steps, proof-of-concept evidence and remediation guidance</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="entry reveal">
-        <div>
-          <span class="entry-date">Dec 2022 </span>
-          <div class="entry-flag" data-since="2022-12" data-type="Freelance">Freelance · 3 yrs 10 mos</div>
+          <span class="entry-date">Dec 2022 — Oct 2026</span>
+          <div class="entry-flag">Freelance · 3 yrs 10 mos</div>
         </div>
         <div>
           <h3 class="entry-role">Red Team Member</h3>
@@ -376,15 +376,15 @@ footer{border-top:1px solid var(--line);padding:48px 0 56px;background:var(--pan
       <article class="entry reveal">
         <div>
           <span class="entry-date">Jan 2019 — Dec 2022</span>
-          <div class="entry-flag" data-since="2019-01" data-type="Part-time">Part-time · 7 yrs 9 mos</div>
+          <div class="entry-flag">Part-time · 3 yrs 11 mos</div>
         </div>
         <div>
           <h3 class="entry-role">Ethical Hacker</h3>
           <div class="entry-org"><span class="org-mark">B</span> Bugcrowd</div>
           <ul class="achievements">
-            <li>Conduct independent security research through authorised vulnerability disclosure programmes</li>
-            <li>Investigate vulnerabilities involving blind XSS, cross-site request forgery (CSRF), domain takeover and account compromise</li>
-            <li>Document findings with technical evidence and reproducible testing steps</li>
+            <li>Conducted independent security research through authorised vulnerability disclosure programmes</li>
+            <li>Investigated vulnerabilities involving blind XSS, cross-site request forgery (CSRF), domain takeover and account compromise</li>
+            <li>Documented findings with technical evidence and reproducible testing steps</li>
             <li>Hall of Fame recognition from organisations including Cisco, Dell and GoPro</li>
           </ul>
         </div>
@@ -392,16 +392,16 @@ footer{border-top:1px solid var(--line);padding:48px 0 56px;background:var(--pan
 
       <article class="entry reveal">
         <div>
-          <span class="entry-date">Nov 2018 — Dec 2020</span>
-          <div class="entry-flag" data-since="2018-11" data-type="Part-time">Part-time · 7 yrs 11 mos</div>
+          <span class="entry-date">Nov 2018 — Dec 2022</span>
+          <div class="entry-flag">Part-time · 4 yrs 1 mo</div>
         </div>
         <div>
           <h3 class="entry-role">Ethical Hacker</h3>
           <div class="entry-org"><span class="org-mark">H1</span> HackerOne</div>
           <ul class="achievements">
-            <li>Research application security vulnerabilities across web applications and online services</li>
-            <li>Investigate SQL injection, DOM-based XSS, subdomain takeover, open redirects and account-takeover weaknesses</li>
-            <li>Validate issues with manual testing and report technical impact and remediation considerations</li>
+            <li>Researched application security vulnerabilities across web applications and online services</li>
+            <li>Investigated SQL injection, DOM-based XSS, subdomain takeover, open redirects and account-takeover weaknesses</li>
+            <li>Validated issues with manual testing and reported technical impact and remediation considerations</li>
             <li>Hall of Fame recognition from organisations including Meta, Reddit and Coursera</li>
           </ul>
         </div>
@@ -610,19 +610,6 @@ let ri = 0, ci = 0, del = false;
   else if (del && ci === 0) { del = false; ri = (ri + 1) % roles.length; speed = 400; }
   setTimeout(type, speed);
 })();
-
-// running roles: keep "X yrs Y mos" current (static text above is the no-JS fallback)
-document.querySelectorAll('.entry-flag[data-since]').forEach(el => {
-  const [y, m] = el.dataset.since.split('-').map(Number);
-  const now = new Date();
-  const total = (now.getFullYear() - y) * 12 + (now.getMonth() + 1 - m);
-  if (total < 1) return;
-  const yrs = Math.floor(total / 12), mos = total % 12;
-  const parts = [];
-  if (yrs) parts.push(yrs + (yrs === 1 ? ' yr' : ' yrs'));
-  if (mos) parts.push(mos + (mos === 1 ? ' mo' : ' mos'));
-  el.textContent = el.dataset.type + ' · ' + parts.join(' ');
-});
 
 // reveal on scroll
 const io = new IntersectionObserver(entries => {
